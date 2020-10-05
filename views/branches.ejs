@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <% branches.forEach((branch)=>{ %>
+    <h1><%= branch.branchName %></h1>
+    <img src="<%=branch.address%>" width="300" height="225" />
+    <iframe
+      src="<%= branch.maps %>"
+      width="300"
+      height="225"
+      frameborder="0"
+      style="border: 0"
+      allowfullscreen=""
+      aria-hidden="false"
+      tabindex="0"
+    ></iframe>
+    <a href="/branch/<%=branch.branchId%>">View Cars</a>
+    <% }) %>
+  </body>
+</html>

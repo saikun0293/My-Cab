@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% if(cars.length==0){ %>
+    <h3>No Cars Avaliable</h3>
+    <% }else{ %> <% cars.forEach((car)=>{ %>
+    <h1><%=car.carName%></h1>
+    <p>Price for One Hour - <%=car.priceOne %> per hour</p>
+    <p>Price for Five Hours - <%=car.priceFive %> per hour</p>
+    <p>Price for over Five Hours - <%=car.priceSix %> per hour</p>
+    <p><img src="<%=car.image1%>" alt="" width="500px" /></p>
+    <p><img src="<%=car.image2%>" alt="" width="500px" /></p>
+    <p><img src="<%=car.image3%>" alt="" width="500px" /></p>
+    <p><a href="<%=car.carDetails%>">Additional Information</a></p>
+    <p><a href="/userBooking/<%=car.carId%>">Book Now</a></p>
+
+    <% }) %> <% } %>
+  </body>
+</html>
