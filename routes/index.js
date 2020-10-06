@@ -11,14 +11,6 @@ var con = mysql.createConnection({
   database: "dbms2",
 });
 
-// let transpoter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: "meetingscheduler2000@gmail.com",
-//     pass: "test123@",
-//   },
-// });
-
 con.connect(function (err) {
   if (err) throw err;
   console.log("database connected successfully");
@@ -373,17 +365,197 @@ router.post("/adminlogin", function (req, res) {
         res.redirect("/adminlogin");
       }
     });
+  }
+  //else {
+  //   res.redirect("/city");
+  // }
+});
+
+router.get("/addBranch", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
   } else {
-    res.redirect("/city");
+    var query =
+      "select * from branch join branch2 on branch.cityId = branch2.cityId ";
+    var query2 = mysql.format(query);
+    con.query(query2, function (err, response) {
+      if (err) throw err;
+      res.render("addBranch", {
+        response: response,
+      });
+    });
   }
 });
 
-router.get("/addbranch", function (req, res) {
-  res.render("addBranch.ejs");
+router.post("/addBranch", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var cityId = req.body.cityId;
+    var newBranch = req.body.newBranch;
+    var newBranchId = req.body.newBranchId;
+    var pincode = req.body.pincode;
+    var address = req.body.picture;
+    var maps = req.body.maps;
+    var query =
+      "insert into branch (branchId,cityId,branchName,pincode,address,maps) values(?,?,?,?,?,?)";
+    var query2 = mysql.format(query, [
+      newBranchId,
+      cityId,
+      newBranch,
+      pincode,
+      address,
+      maps,
+    ]);
+
+    con.query(query2, function (err, response) {
+      if (err) throw err;
+      res.render("adminhome");
+    });
+  }
 });
 
-router.get("/addcar", function (req, res) {
-  res.render("addCar.ejs");
+router.get("/addCar", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var query = "select carName from car2";
+    con.query(query, function (err, response) {
+      if (err) throw err;
+      res.render("addCar", {
+        response: response,
+      });
+    });
+  }
+});
+
+router.post("/addCar", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var carName = req.body.carName;
+    var carDetails = req.body.carDetails;
+    var image1 = req.body.image1;
+    var image2 = req.body.image2;
+    var image3 = req.body.image3;
+    var query =
+      "insert into car2 (carName,carDetails,image1,image2,image3) values(?,?,?,?,?)";
+    var query2 = mysql.format(query, [
+      carName,
+      carDetails,
+      image1,
+      image2,
+      image3,
+    ]);
+    con.query(query2, function (err, response) {
+      if (err) throw err;
+      res.render("adminhome");
+    });
+  }
+});
+
+router.get("/addCarBranch", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var query =
+      "select carId,carName,car.branchId,branchName from car join branch on branch.branchId =car.branchId";
+    var query2 = mysql.format(query);
+    con.query(query2, function (err, response) {
+      if (err) throw err;
+      res.render("addCarBranch", {
+        response: response,
+      });
+    });
+  }
+});
+
+router.post("/addCarBranch", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var carId = req.body.carId;
+    var carName = req.body.carName;
+    var priceOne = req.body.priceOne;
+    var priceFive = req.body.priceFive;
+    var priceSix = req.body.priceSix;
+    var branchId = req.body.branchId;
+    var query =
+      "insert into car (carId,carName,priceOne,priceFive,priceSix,branchId) values(?,?,?,?,?,?)";
+    var query2 = mysql.format(query, [
+      carId,
+      carName,
+      priceOne,
+      priceFive,
+      priceSix,
+      branchId,
+    ]);
+    con.query(query2, function (err) {
+      if (err) throw err;
+      res.render("adminhome");
+    });
+  }
+});
+
+router.get("/deleteBranch", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var query =
+      "select branchId,branchName,cityName from branch join branch2 on branch.cityId =branch2.cityId ";
+    var query2 = mysql.format(query);
+    con.query(query2, function (err, response) {
+      if (err) throw err;
+      res.render("deleteBranch", {
+        response: response,
+      });
+    });
+  }
+});
+
+router.post("/deleteBranch", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var branchId = req.body.branchId;
+    var deleteQuery = "delete from branch where branchId = ?";
+    var query = mysql.format(deleteQuery, branchId);
+    con.query(query, function (err) {
+      if (err) throw err;
+      res.render("adminhome");
+    });
+  }
+});
+
+router.get("/deletecar", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var query =
+      "select * from car join branch on car.branchId =branch.branchId ";
+    var query2 = mysql.format(query);
+    con.query(query2, function (err, response) {
+      if (err) throw err;
+      // console.log(response);
+      res.render("deleteCar", {
+        response: response,
+      });
+    });
+  }
+});
+
+router.post("/deleteCar", function (req, res) {
+  if (authenticated == false) {
+    res.redirect("/adminlogin");
+  } else {
+    var carId = req.body.carId;
+    var deleteQuery = "delete from car where carId = ?";
+    var query = mysql.format(deleteQuery, carId);
+    con.query(query, function (err) {
+      if (err) throw err;
+      res.render("adminhome");
+    });
+  }
 });
 
 module.exports = router;

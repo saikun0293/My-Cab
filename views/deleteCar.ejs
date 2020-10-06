@@ -22,33 +22,10 @@
 
   <body>
     <div class="container">
-      <h1>Add Car</h1>
-      <form action="/addCar" method="POST">
-        <input type="text" placeholder="Enter carName" name="carName" />
-        <input
-          type="text"
-          placeholder="Enter carDetails"
-          name="carDetails"
-          id=""
-        />
-        <input
-          type="text"
-          placeholder="Exterior Img Address 1"
-          name="image1"
-          id=""
-        />
-        <input
-          type="text"
-          placeholder="Exterior Img Address 2"
-          name="image2"
-          id=""
-        />
-        <input
-          type="text"
-          placeholder="Interior Img Address"
-          name="image3"
-          id=""
-        />
+      <h1>Delete Car from Branch</h1>
+
+      <form action="/deleteCar" method="POST">
+        <input type="number" placeholder="Enter carID" name="carId" />
         <input type="submit" />
       </form>
       <div class="row">
@@ -56,13 +33,17 @@
         <table id="membersTable" class="table table-striped table-primary">
           <thead>
             <tr>
+              <th>CarId</th>
               <th>CarName</th>
+              <th>BranchName</th>
             </tr>
           </thead>
           <tbody>
             <%if (response.length >0){ %> <% response.forEach(function(row){ %>
             <tr>
+              <td><%=row.carId %></td>
               <td><%=row.carName %></td>
+              <td><%=row.branchName %></td>
             </tr>
             <% })}else{ %>
             <tr>
@@ -73,7 +54,6 @@
         </table>
       </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
